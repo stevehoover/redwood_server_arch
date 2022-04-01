@@ -13,6 +13,7 @@
       load, 0,
       autosave, 1,
       compile, 1,
+      new_proj, 2,
       commit, 2,
       push_api, 2)
 \TLV ide(|_top, _app, _db)
@@ -28,9 +29,11 @@
             @m4_load
                /db
                   $tlv = |_top/desktop$cmd_tlv;
-         /desktop
-            @m4_autosave
+         @m4_autosave
+            /desktop
                $tlv2 = $cmt_tlv && |_top/ide_server$autosave;
+            /ide_server
+               $autosave = |_top/ide_client$autosave;
       , _app, new,
       \TLV
          /desktop
@@ -62,6 +65,10 @@
 \TLV makerchip_today()
    |makerchip_today
       m4+ide(|makerchip_today, , db)
+      /ide_server
+         /db
+            @m4_new_proj
+               $new_tlv = |makerchip_today/ide_client$tlv;
 \TLV sandstorm()
    |sandstorm
       m4+ide(|sandstorm, app)
@@ -93,7 +100,7 @@
       /mcp_client
          @m4_load
             $html_css_js = |mcp/mcp_server$html_css_js;
-      m4+ide(|mcp, db)
+      m4+ide(|mcp, , db)
       /ide_client
          @m4_create
             $open_ide = |mcp/mcp_client$new_repo;
